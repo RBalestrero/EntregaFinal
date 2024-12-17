@@ -1,0 +1,45 @@
+.ticket {
+    display: flex;
+    height: 70px;
+    margin: 15px 0;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5px 0;
+    border: 1px solid rgba(0, 0, 0, 0.283);
+    border-radius: 6px;
+  }
+
+  .infoTicket {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 10% 13% 23% 11% 1fr;
+    grid-template-rows: 50px;
+    row-gap: 0px;
+    column-gap: 30px;
+    place-items: center;
+  }
+  
+  .buttonsTicket {
+    display: flex;
+    width: 200px;
+    height: 25px;
+    justify-content: space-around;
+    margin-right: 10px;
+  }
+  
+  #description {
+    width: 1fr;
+    height: 100%;
+    overflow: hidden;
+    text-align: center;
+    align-content: center;
+  }
+
+  .infoContent{
+    width: 100%;
+    font-family: sans-serif;
+    font-weight: 100;
+    font-style: normal;
+  }
