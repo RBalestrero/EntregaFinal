@@ -13,11 +13,9 @@ import {
 } from "./card.js"
 
 
-
 const search = (tickets) => {
   const input = document.querySelector(".inputFilter");
   input.addEventListener("keydown", (e) => {
-    console.log(e);
     if (e.key === "Enter") {
       if (input.value) {
         let ticketById = searchByID(tickets,input.value);
@@ -55,25 +53,63 @@ const viewAll = (tickets) => {
 };
 
 const closeTicket = (tickets) => {
-  const buttons = document.querySelectorAll('.btn-outline-success');
+  const buttons = document.querySelectorAll('.bi-file-check');
+  
   buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      tickets = editTicketState(tickets,button.id);
-      render(tickets);
+    button.addEventListener('click', async () => {
+      try {
+        
+        if(tickets.find(ticket => ticket.idTicket === button.id).estado === "abierto"){
+          tickets = await editTicketState(tickets,button.id);
+          Toastify({
+            text: "Ticket cerrado con éxito",
+            className: "info",
+            style: {
+              background: " #4CAF50",
+            }
+          }).showToast();
+          render(tickets);
+        }
+        else
+        {
+          Toastify({
+            text: "El ticket ya está cerrado",
+            className: "info",
+            style: {
+              background: " #FF0000",
+            }
+          }).showToast();
+        }
+    
+      } catch (error) {
+        console.log('Error: ', error);      
+      }
     })
+      
   });
 }
 
 const deleteTicketEvent = (tickets) => {
-  const button = document.querySelectorAll(".btn-outline-danger");
+  const button = document.querySelectorAll(".bi-file-x");
   button.forEach(button => {
-    button.addEventListener("click", (e) => {
-      tickets = deleteTicket(tickets,e.target.id);
-      render(tickets);
-      let ticketList = JSON.parse(localStorage.getItem("ticketList"));
-      let index = ticketList.findIndex((ticket) => ticket.idTicket === e.target.id);
-      ticketList.splice(index,1);
-      localStorage.setItem("ticketList", JSON.stringify(ticketList));
+    button.addEventListener("click", async (e) => {
+      try {
+        tickets = await deleteTicket(tickets,e.target.id);
+        render(tickets);
+        let ticketList = JSON.parse(localStorage.getItem("ticketList"));
+        let index = ticketList.findIndex((ticket) => ticket.idTicket === e.target.id);
+        ticketList.splice(index,1);
+        localStorage.setItem("ticketList", JSON.stringify(ticketList));
+        Toastify({
+          text: "Ticket eliminado con éxito",
+          className: "info",
+          style: {
+            background: "rgb(126, 126, 126)",
+          }
+        }).showToast();
+      } catch (error) {
+        console.log('Error: ', error);
+      }
     });
   });
 }

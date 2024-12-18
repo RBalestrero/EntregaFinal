@@ -10,7 +10,11 @@ const newTicket = () => {
 };
 
 const storeTickets = async (ticketList) =>{
-  localStorage.setItem("ticketList", JSON.stringify(ticketList));
+  try {
+    localStorage.setItem("ticketList", JSON.stringify(ticketList));
+  } catch (error) {
+    console.log('Error: ', error);
+  }
 }
 
 const searchByID = (tickets, id) => {
@@ -41,13 +45,17 @@ const viewCloseTickets = (tickets) => {
   return closeTickets;
 };
 
-const editTicketState = (tickets,id) => {
-  let index = tickets.findIndex((ticket) => ticket.idTicket === id);
-  tickets[index].estado = "cerrado";
-  tickets[index].resultado = "Resuelto";
-  saveTicketInLocalStorage(tickets[index]);
-  return tickets;
-
+const editTicketState = async (tickets,id) => {
+  try {
+    console.log("hola");
+    let index = tickets.findIndex((ticket) => ticket.idTicket === id);
+    tickets[index].estado = "cerrado";
+    tickets[index].resultado = "Resuelto";
+    storeTickets(tickets);
+    return tickets;
+  } catch (error) {
+    console.log('Error: ', error);
+  }
 };
 
 const print = (ticket) => {
@@ -60,17 +68,25 @@ const print = (ticket) => {
         Resultado: ${ticket.resultado}`);
 };
 
-const saveTicketInLocalStorage = (ticket) => {
-  let tickets =  JSON.parse(localStorage.getItem("deletedTickets")) || [] ; 
-  tickets.push(ticket);
-  localStorage.setItem("deletedTickets", JSON.stringify(tickets));
+const saveDeleteTicketInLocalStorage = async (ticket) => {
+  try {
+    let tickets =  JSON.parse(localStorage.getItem("deletedTickets")) || [] ; 
+    tickets.push(ticket);
+    localStorage.setItem("deletedTickets", JSON.stringify(tickets));
+  } catch (error) {
+    console.log('Error: ', error);
+  }
 };
 
-const deleteTicket = (tickets,id) => {
-  let index = tickets.findIndex((ticket) => ticket.idTicket === id);
-  tickets.splice(index,1);
-  saveTicketInLocalStorage(tickets[index]);
-  return tickets;
+const deleteTicket = async(tickets,id) => {
+  try {
+    let index = tickets.findIndex((ticket) => ticket.idTicket === id);
+    tickets.splice(index,1);
+    saveDeleteTicketInLocalStorage(tickets[index]);
+    return tickets;
+  } catch (error) {
+    console.log('Error: ', error);
+  }
 };
 
 export {
@@ -81,7 +97,7 @@ export {
   viewOpenTickets,
   viewCloseTickets,
   editTicketState,
-  saveTicketInLocalStorage,
+  saveDeleteTicketInLocalStorage,
   deleteTicket,
   storeTickets
 };
