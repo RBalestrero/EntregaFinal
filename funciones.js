@@ -47,7 +47,6 @@ const viewCloseTickets = (tickets) => {
 
 const editTicketState = async (tickets,id) => {
   try {
-    console.log("hola");
     let index = tickets.findIndex((ticket) => ticket.idTicket === id);
     tickets[index].estado = "cerrado";
     tickets[index].resultado = "Resuelto";
